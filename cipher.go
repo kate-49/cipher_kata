@@ -11,6 +11,7 @@ type Solver struct {
 	Data    []Row
 	Message []string
 	Keyword []string
+	Result  string
 }
 
 type Row struct {
@@ -18,26 +19,8 @@ type Row struct {
 	Value  []string
 }
 
-func createKeyword(word string, requiredLength int) []string {
-	wordAsArray := strings.Split(word, "")
-	newArray := []string{}
-	k := 0
-
-	for i := 1; i < requiredLength+1; i++ {
-		newArray = append(newArray, wordAsArray[k])
-		if k == len(word)-1 {
-			k = 0
-		} else {
-			k++
-		}
-	}
-	return newArray
-}
-
-func CreateSolver(message string, keyword string) (Solver, error) {
+func CreateSolver() (Solver, error) {
 	s := Solver{}
-	s.Message = strings.Split(message, "")
-	s.Keyword = createKeyword(keyword, len(s.Message))
 
 	file, err := os.Open("data.txt")
 	if err != nil {
@@ -64,6 +47,7 @@ func CreateSolver(message string, keyword string) (Solver, error) {
 		return Solver{}, err
 	}
 
+	//print the thing so its easy to see
 	for i := 1; i < len(s.Data); i++ {
 		fmt.Println(s.Data[i])
 	}
@@ -71,7 +55,26 @@ func CreateSolver(message string, keyword string) (Solver, error) {
 	return s, nil
 }
 
-func (s Solver) Encode() string {
+func createKeyword(word string, requiredLength int) []string {
+	wordAsArray := strings.Split(word, "")
+	newArray := []string{}
+	k := 0
+
+	for i := 1; i < requiredLength+1; i++ {
+		newArray = append(newArray, wordAsArray[k])
+		if k == len(word)-1 {
+			k = 0
+		} else {
+			k++
+		}
+	}
+	return newArray
+}
+
+func (s Solver) Encode(message string, keyword string) string {
+	s.Message = strings.Split(message, "")
+	s.Keyword = createKeyword(keyword, len(s.Message))
+
 	answer := []string{}
 	for i, k := range s.Message {
 		//	look up column s (i.e. k here) and then row m (i.e. keyword[i])
