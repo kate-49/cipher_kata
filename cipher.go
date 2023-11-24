@@ -18,10 +18,26 @@ type Row struct {
 	Value  []string
 }
 
+func createKeyword(word string, requiredLength int) []string {
+	wordAsArray := strings.Split(word, "")
+	newArray := []string{}
+	k := 0
+
+	for i := 1; i < requiredLength+1; i++ {
+		newArray = append(newArray, wordAsArray[k])
+		if k == len(word)-1 {
+			k = 0
+		} else {
+			k++
+		}
+	}
+	return newArray
+}
+
 func CreateSolver(message string, keyword string) (Solver, error) {
 	s := Solver{}
 	s.Message = strings.Split(message, "")
-	s.Keyword = strings.Split(keyword, "")
+	s.Keyword = createKeyword(keyword, len(s.Message))
 
 	file, err := os.Open("data.txt")
 	if err != nil {
@@ -31,11 +47,16 @@ func CreateSolver(message string, keyword string) (Solver, error) {
 
 	for scanner.Scan() {
 		entries := strings.Split(strings.TrimSpace(scanner.Text()), "")
-		k := Row{
-			Letter: entries[0],
-			Value:  entries[2:],
+		fmt.Println("letter")
+		//fix this its ugly
+		if entries[2] != strings.ToUpper(entries[2]) {
+			fmt.Println(entries[2:])
+			k := Row{
+				Letter: entries[0],
+				Value:  entries[2:],
+			}
+			s.Data = append(s.Data, k)
 		}
-		s.Data = append(s.Data, k)
 	}
 
 	err = file.Close()
@@ -55,7 +76,6 @@ func (s Solver) Encode() string {
 	for i, k := range s.Message {
 		//	look up column s (i.e. k here) and then row m (i.e. keyword[i])
 		letterFromMessage := GetIndexOfLetter(k)
-
 		letter := s.GetElement(letterFromMessage, s.Keyword[i])
 		answer = append(answer, letter)
 	}
@@ -67,8 +87,6 @@ func GetIndexOfLetter(letter string) int {
 }
 
 func (s Solver) GetElement(letterLocation int, letter string) string {
-	fmt.Println("letter")
-	fmt.Println(letter)
 	for _, k := range s.Data {
 		if k.Letter == strings.ToUpper(letter) {
 			return k.Value[letterLocation]
