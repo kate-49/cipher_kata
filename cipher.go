@@ -50,21 +50,16 @@ func CreateSolver(message string, keyword string) (Solver, error) {
 	return s, nil
 }
 
-func (s Solver) Encode() []string {
+func (s Solver) Encode() string {
 	answer := []string{}
 	for i, k := range s.Message {
-		fmt.Println("letter in message")
-		fmt.Println(k)
-		fmt.Println("letter in keyword")
-		fmt.Println(s.Keyword[i])
 		//	look up column s (i.e. k here) and then row m (i.e. keyword[i])
 		letterFromMessage := GetIndexOfLetter(k)
 
 		letter := s.GetElement(letterFromMessage, s.Keyword[i])
 		answer = append(answer, letter)
-		return answer
 	}
-	return s.Keyword
+	return strings.Join(answer, "")
 }
 
 func GetIndexOfLetter(letter string) int {
