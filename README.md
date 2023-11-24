@@ -1,22 +1,60 @@
-# magic_square-kata
+# Cipher_kata
 
-https://github.com/gigasquid/wonderland-clojure-katas/blob/master/magic-square/README.md
+https://github.com/gigasquid/wonderland-clojure-katas/blob/master/alphabet-cipher/README.md
 
-This puzzle comes from Lewis Carroll. The magic part is when the values on a square are arranged so that adding them up in any direction results in a constant sum.
+Lewis Carroll published a cipher known as The Alphabet Cipher
 
-You have the following values:
+This Alphabet Cipher involves alphabet substitution using a keyword.
 
-1.0
-1.5
-2.0
-2.5
-3.0
-3.5
-4.0
-4.5
-5.0
-You need to arrange them in a 3 x 3 matrix so that:
+First you must make a substitution chart like this, where each row of the alphabet is rotated by one as each letter goes down the chart.
 
-The sums of numbers in each row = magic number
-The sums of numbers in each column = magic number
-The sums of numbers in each diagonal = magic number
+```
+  ABCDEFGHIJKLMNOPQRSTUVWXYZ
+A abcdefghijklmnopqrstuvwxyz
+B bcdefghijklmnopqrstuvwxyza
+C cdefghijklmnopqrstuvwxyzab
+D defghijklmnopqrstuvwxyzabc
+E efghijklmnopqrstuvwxyzabcd
+F fghijklmnopqrstuvwxyzabcde
+G ghijklmnopqrstuvwxyzabcdef
+H hijklmnopqrstuvwxyzabcdefg
+I ijklmnopqrstuvwxyzabcdefgh
+J jklmnopqrstuvwxyzabcdefghi
+K klmnopqrstuvwxyzabcdefghij
+L lmnopqrstuvwxyzabcdefghijk
+M mnopqrstuvwxyzabcdefghijkl
+N nopqrstuvwxyzabcdefghijklm
+O opqrstuvwxyzabcdefghijklmn
+P pqrstuvwxyzabcdefghijklmno
+Q qrstuvwxyzabcdefghijklmnop
+R rstuvwxyzabcdefghijklmnopq
+S stuvwxyzabcdefghijklmnopqr
+T tuvwxyzabcdefghijklmnopqrs
+U uvwxyzabcdefghijklmnopqrst
+V vwxyzabcdefghijklmnopqrstu
+W wxyzabcdefghijklmnopqrstuv
+X xyzabcdefghijklmnopqrstuvw
+Y yzabcdefghijklmnopqrstuvwx
+Z zabcdefghijklmnopqrstuvwxy
+```
+Both parties need to decide on a secret keyword. This keyword is not written down anywhere, but memorized.
+
+To encode the message, first write down the message.
+
+    meetmebythetree 
+Then, write the keyword, (which in this case is scones), repeated as many times as necessary.
+
+```
+sconessconessco
+meetmebythetree
+```
+Now you can look up the column S in the table and follow it down until it meets the M row. The value at the intersection is the letter e. All the letters would be thus encoded.
+
+```
+sconessconessco
+meetmebythetree
+egsgqwtahuiljgs
+```
+The encoded message is now `egsgqwtahuiljgs`
+
+To decode, the person would use the secret keyword and do the opposite.
